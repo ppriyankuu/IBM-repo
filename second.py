@@ -23,15 +23,25 @@ df = pd.read_csv("datasets/cleaned_ufc.csv")
 column_to_plot = 'winner'
 value_counts = df[column_to_plot].value_counts()
 
-# plt.figure(figsize=(8, 8)) 
+plt.figure(figsize=(8, 8)) 
+
+##### PIE
 # plt.pie(value_counts, labels=value_counts.index, autopct='%1.1f%%', startangle=90)
 # plt.title(f'Pie Chart of Winner Column')
 # plt.axis('equal')
 # plt.show()
 
-kg_diff_counts = df['kd_diff'].value_counts()
-kg_diff_counts.plot(kind='bar', color='lightgreen', edgecolor='black')
-plt.title('kd difference dist.')
-plt.xlabel('KD difference')
-plt.ylabel('count')
+##### BAR
+# kg_diff_counts = df['kd_diff'].value_counts()
+# kg_diff_counts.plot(kind='bar', color='lightgreen', edgecolor='black')
+# plt.title('kd difference dist.')
+# plt.xlabel('KD difference')
+# plt.ylabel('count')
+# plt.show()
+
+#### HIST
+plt.hist(df['str_att_diff'], bins=20, color='lightcoral', edgecolor='black')
+plt.title('straight attack difference dist.')
+plt.xlabel('Straight attacks')
+plt.ylabel('difference')
 plt.show()
