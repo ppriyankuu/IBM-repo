@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 df = pd.read_csv("datasets/cleaned_ufc.csv")
 
 # other_items = ["reach_diff", "b_reach", "b_age", "r_age", "total_rounds", "age_diff", "r_reach"]
-
 # for column in other_items:
 #     df[column] = df[column].fillna(df[column].median())
 
