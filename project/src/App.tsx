@@ -45,12 +45,14 @@ function App() {
   return (
     <div className="App">
       <h1>Lung Cancer Prediction Analysis</h1>
-      <DataInfo dataInfo={dataInfo} />
-      <AgeGroupedChart data={ageGroupedData} />
-      <TopCountriesBarChart data={topCountriesData} />
-      <PollutionExposurePieChart data={pollutionExposureData} />
-      <LungCancerPrevalenceHistogram histData={histData} binEdges={binEdges} />
-      <ModelEvaluations evaluations={modelEvaluations} />
+      <div>
+        <DataInfo dataInfo={dataInfo} />
+        <AgeGroupedChart data={ageGroupedData} />
+        <TopCountriesBarChart data={topCountriesData} />
+        <PollutionExposurePieChart data={pollutionExposureData} />
+        <LungCancerPrevalenceHistogram histData={histData} binEdges={binEdges} />
+        <ModelEvaluations evaluations={modelEvaluations} />
+      </div>
     </div>
   );
 }
