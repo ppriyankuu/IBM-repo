@@ -40,3 +40,16 @@
 .read-the-docs {
   color: #888;
 }
+
+.charts-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.charts-container > * {
+  width: 100%;
+}

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import DataInfo from './components/DataInfo';
 import AgeGroupedChart from './components/AgeGroupedChart';
 import TopCountriesBarChart from './components/TopCountriesBarChart';
 import PollutionExposurePieChart from './components/PollutionExposurePieChart';
@@ -8,7 +7,6 @@ import LungCancerPrevalenceHistogram from './components/LungCancerPrevalencePieC
 import ModelEvaluations from './components/ModelEvalucation';
 
 function App() {
-  const [dataInfo, setDataInfo] = useState<string>('');
   const [ageGroupedData, setAgeGroupedData] = useState<{ Age: number, Annual_Lung_Cancer_Deaths: number }[]>([]);
   const [topCountriesData, setTopCountriesData] = useState<{ Country: string, Count: number }[]>([]);
   const [pollutionExposureData, setPollutionExposureData] = useState<{ Air_Pollution_Exposure: string, Count: number }[]>([]);
@@ -18,9 +16,6 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const dataInfoResponse = await fetch('/data/df_info.json');
-      setDataInfo(await dataInfoResponse.text());
-
       const ageGroupedResponse = await fetch('/data/age_grouped.json');
       setAgeGroupedData(await ageGroupedResponse.json());
 
@@ -43,18 +38,18 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <div>
       <h1>Lung Cancer Prediction Analysis</h1>
-      <div>
-        <DataInfo dataInfo={dataInfo} />
+      <div className="charts-container">
         <AgeGroupedChart data={ageGroupedData} />
         <TopCountriesBarChart data={topCountriesData} />
         <PollutionExposurePieChart data={pollutionExposureData} />
         <LungCancerPrevalenceHistogram histData={histData} binEdges={binEdges} />
-        <ModelEvaluations evaluations={modelEvaluations} />
       </div>
+      <ModelEvaluations evaluations={modelEvaluations} />
     </div>
   );
 }
 
 export default App;
+

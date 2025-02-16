@@ -4,6 +4,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 import json
 import numpy as np
@@ -156,6 +159,30 @@ knn_accuracy = accuracy_score(y_test, y_pred_knn)
 knn_confusion_matrix = confusion_matrix(y_test, y_pred_knn).tolist()
 knn_classification_report = classification_report(y_test, y_pred_knn, output_dict=True)
 
+# Train SVM model
+svc_model = SVC(kernel='linear')
+svc_model.fit(X_train, y_train)
+y_pred_svc = svc_model.predict(X_test)
+svc_accuracy = accuracy_score(y_test, y_pred_svc)
+svc_confusion_matrix = confusion_matrix(y_test, y_pred_svc).tolist()
+svc_classification_report = classification_report(y_test, y_pred_svc, output_dict=True, zero_division=0)
+
+# Train Decision Tree model
+dc_model = DecisionTreeClassifier(criterion='gini', random_state=42)
+dc_model.fit(X_train, y_train)
+y_pred_dc = dc_model.predict(X_test)
+dc_accuracy = accuracy_score(y_test, y_pred_dc)
+dc_confusion_matrix = confusion_matrix(y_test, y_pred_dc).tolist()
+dc_classification_report = classification_report(y_test, y_pred_dc, output_dict=True, zero_division=0)
+
+# Train Random Forest model
+rf_model = RandomForestClassifier(n_estimators=100, criterion='gini', random_state=42)
+rf_model.fit(X_train, y_train)
+y_pred_rf = rf_model.predict(X_test)
+rf_accuracy = accuracy_score(y_test, y_pred_rf)
+rf_confusion_matrix = confusion_matrix(y_test, y_pred_rf).tolist()
+rf_classification_report = classification_report(y_test, y_pred_rf, output_dict=True, zero_division=0)
+
 # Save model evaluations
 model_evaluations = {
     'log_reg_accuracy': log_reg_accuracy,
@@ -163,7 +190,17 @@ model_evaluations = {
     'log_reg_classification_report': log_reg_classification_report,
     'knn_accuracy': knn_accuracy,
     'knn_confusion_matrix': knn_confusion_matrix,
-    'knn_classification_report': knn_classification_report
+    'knn_classification_report': knn_classification_report,
+    'svc_accuracy': svc_accuracy,
+    'svc_confusion_matrix': svc_confusion_matrix,
+    'svc_classification_report': svc_classification_report,
+    'dc_accuracy': dc_accuracy,
+    'dc_confusion_matrix': dc_confusion_matrix,
+    'dc_classification_report': dc_classification_report,
+    'rf_accuracy': rf_accuracy,
+    'rf_confusion_matrix': rf_confusion_matrix,
+    'rf_classification_report': rf_classification_report
 }
+
 with open(os.path.join(PUBLIC_DATA_PATH, 'model_evaluations.json'), 'w') as f:
-    json.dump(model_evaluations, f)
+    json.dump(model_evaluations, f, indent=6)
