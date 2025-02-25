@@ -10,34 +10,37 @@ interface ClassificationReportEntry {
 
 type ClassificationReport = Record<string, ClassificationReportEntry>;
 
-// Define types for model evaluations
-type ModelKey = 'log_reg' | 'knn' | 'svc' | 'dc' | 'rf';
-
 interface Evaluations {
-  // Logistic Regression
-  log_reg_accuracy?: number;
-  log_reg_confusion_matrix?: number[][];
-  log_reg_classification_report?: ClassificationReport;
-
-  // K-Nearest Neighbors
-  knn_accuracy?: number;
-  knn_confusion_matrix?: number[][];
-  knn_classification_report?: ClassificationReport;
-
-  // Support Vector Classifier
-  svc_accuracy?: number;
-  svc_confusion_matrix?: number[][];
-  svc_classification_report?: ClassificationReport;
-
-  // Decision Tree Classifier
-  dc_accuracy?: number;
-  dc_confusion_matrix?: number[][];
-  dc_classification_report?: ClassificationReport;
-
-  // Random Forest
-  rf_accuracy?: number;
-  rf_confusion_matrix?: number[][];
-  rf_classification_report?: ClassificationReport;
+  "Logistic Regression": {
+    accuracy: number;
+    confusion_matrix: number[][];
+    classification_report: ClassificationReport;
+  };
+  "K-Nearest Neighbors": {
+    accuracy: number;
+    confusion_matrix: number[][];
+    classification_report: ClassificationReport;
+  };
+  "Support Vector Machine": {
+    accuracy: number;
+    confusion_matrix: number[][];
+    classification_report: ClassificationReport;
+  };
+  "Decision Tree": {
+    accuracy: number;
+    confusion_matrix: number[][];
+    classification_report: ClassificationReport;
+  };
+  "Random Forest": {
+    accuracy: number;
+    confusion_matrix: number[][];
+    classification_report: ClassificationReport;
+  };
+  "Naive Bayes": {
+    accuracy: number;
+    confusion_matrix: number[][];
+    classification_report: ClassificationReport;
+  };
 }
 
 // Table styling
@@ -63,7 +66,7 @@ const tdStyle: React.CSSProperties = {
 // Confusion Matrix component
 const renderConfusionMatrix = (matrix: number[][]) => (
   <table style={tableStyle}>
-    <thead style={{color: 'black'}}>
+    <thead style={{ color: 'black' }}>
       <tr>
         <th style={thStyle}></th>
         {matrix[0].map((_, index) => (
@@ -76,7 +79,7 @@ const renderConfusionMatrix = (matrix: number[][]) => (
     <tbody>
       {matrix.map((row, rowIndex) => (
         <tr key={rowIndex}>
-          <td style={{...thStyle, color: 'black'}}>Actual {rowIndex}</td>
+          <td style={{ ...thStyle, color: 'black' }}>Actual {rowIndex}</td>
           {row.map((value, colIndex) => (
             <td key={colIndex} style={tdStyle}>
               {value}
@@ -95,7 +98,7 @@ const renderClassificationReport = (report: ClassificationReport) => {
 
   return (
     <table style={tableStyle}>
-      <thead style={{color: "black"}}>
+      <thead style={{ color: "black" }}>
         <tr>
           {headers.map((header) => (
             <th key={header} style={thStyle}>
@@ -133,44 +136,44 @@ const renderClassificationReport = (report: ClassificationReport) => {
   );
 };
 
-// Main component
-interface ModelEvaluationsProps {
-  evaluations: Evaluations;
-}
-
-const ModelEvaluations = ({ evaluations }: ModelEvaluationsProps) => {
+const ModelEvaluations = ({ evaluations }: { evaluations: Evaluations }) => {
   const models = [
-    { name: 'Logistic Regression', key: 'log_reg' as ModelKey },
-    { name: 'K-Nearest Neighbors (KNN)', key: 'knn' as ModelKey },
-    { name: 'Support Vector Classifier (SVC)', key: 'svc' as ModelKey },
-    { name: 'Decision Tree Classifier (DC)', key: 'dc' as ModelKey },
-    { name: 'Random Forest (RF)', key: 'rf' as ModelKey },
+    { name: 'Logistic Regression', key: 'Logistic Regression' },
+    { name: 'K-Nearest Neighbors (KNN)', key: 'K-Nearest Neighbors' },
+    { name: 'Support Vector Machine (SVM)', key: 'Support Vector Machine' },
+    { name: 'Decision Tree Classifier (DC)', key: 'Decision Tree' },
+    { name: 'Random Forest (RF)', key: 'Random Forest' },
+    { name: 'Gaussian Naive Bayes (GNB)', key: 'Naive Bayes' },
   ];
 
   return (
     <div>
       <h2>Model Evaluations</h2>
       {models.map((model) => {
-        const accuracy = evaluations[`${model.key}_accuracy`];
-        const confusionMatrix = evaluations[`${model.key}_confusion_matrix`];
-        const classificationReport = evaluations[`${model.key}_classification_report`];
+        // Use a type assertion here
+        const modelData = evaluations[model.key as keyof Evaluations];
+        if (!modelData) {
+          return null; // Skip if data is missing
+        }
+
+        const { accuracy, confusion_matrix, classification_report } = modelData;
 
         return (
           <div key={model.key}>
             <h3>{model.name}</h3>
-            <p>Accuracy: {accuracy ?? 'Not available'}</p>
-            {confusionMatrix ? (
+            <p>Accuracy: {accuracy.toFixed(2)}</p>
+            {confusion_matrix ? (
               <>
                 <p>Confusion Matrix:</p>
-                {renderConfusionMatrix(confusionMatrix)}
+                {renderConfusionMatrix(confusion_matrix)}
               </>
             ) : (
               <p>Confusion Matrix: Not available</p>
             )}
-            {classificationReport ? (
+            {classification_report ? (
               <>
                 <p>Classification Report:</p>
-                {renderClassificationReport(classificationReport)}
+                {renderClassificationReport(classification_report)}
               </>
             ) : (
               <p>Classification Report: Not available</p>
@@ -183,4 +186,3 @@ const ModelEvaluations = ({ evaluations }: ModelEvaluationsProps) => {
 };
 
 export default ModelEvaluations;
-

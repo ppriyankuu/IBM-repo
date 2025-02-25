@@ -3,15 +3,14 @@ import './App.css';
 import AgeGroupedChart from './components/AgeGroupedChart';
 import TopCountriesBarChart from './components/TopCountriesBarChart';
 import PollutionExposurePieChart from './components/PollutionExposurePieChart';
-import LungCancerPrevalenceHistogram from './components/LungCancerPrevalencePieChart';
 import ModelEvaluations from './components/ModelEvalucation';
+import smokersVSnonSmokers from './data/age_distribution.png'
+import PredictionForm from './components/PredictionForm';
 
 function App() {
   const [ageGroupedData, setAgeGroupedData] = useState<{ Age: number, Annual_Lung_Cancer_Deaths: number }[]>([]);
   const [topCountriesData, setTopCountriesData] = useState<{ Country: string, Count: number }[]>([]);
   const [pollutionExposureData, setPollutionExposureData] = useState<{ Air_Pollution_Exposure: string, Count: number }[]>([]);
-  const [histData, setHistData] = useState<number[]>([]);
-  const [binEdges, setBinEdges] = useState<number[]>([]);
   const [modelEvaluations, setModelEvaluations] = useState<any>({});
 
   useEffect(() => {
@@ -24,11 +23,6 @@ function App() {
 
       const pollutionExposureResponse = await fetch('/data/pollution_exposure_counts.json');
       setPollutionExposureData(await pollutionExposureResponse.json());
-
-      const histDataResponse = await fetch('/data/hist_data.json');
-      const histDataJson = await histDataResponse.json();
-      setHistData(histDataJson.hist_data);
-      setBinEdges(histDataJson.bin_edges);
 
       const modelEvaluationsResponse = await fetch('/data/model_evaluations.json');
       setModelEvaluations(await modelEvaluationsResponse.json());
@@ -44,12 +38,12 @@ function App() {
         <AgeGroupedChart data={ageGroupedData} />
         <TopCountriesBarChart data={topCountriesData} />
         <PollutionExposurePieChart data={pollutionExposureData} />
-        <LungCancerPrevalenceHistogram histData={histData} binEdges={binEdges} />
+        <img src={smokersVSnonSmokers} />
       </div>
       <ModelEvaluations evaluations={modelEvaluations} />
+      <PredictionForm />
     </div>
   );
 }
 
 export default App;
-

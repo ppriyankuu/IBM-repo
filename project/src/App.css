@@ -44,7 +44,7 @@
 .charts-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  gap: 3rem;
   max-width: 1200px;
   margin: 0 auto;
   align-items: center;
